@@ -4,7 +4,7 @@ from unsloth import FastLanguageModel
 
 # Load quantized 4-bit model
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name = "unsloth/llama-2-7b-bnb-4bit",  # << THIS is already quantized
+    model_name = "unsloth/llama-2-7b-bnb-4bit",  # this is already quantized
     max_seq_length = 512,
 )
 
@@ -19,11 +19,11 @@ model = FastLanguageModel.get_peft_model(
 )
 
 from datasets import load_dataset, Dataset
-# --- Load text dataset ---
+# Load text dataset
 raw_dataset = load_dataset("wikitext", "wikitext-103-raw-v1", split="train")
 
 
-# --- function to create input-target pairs ---
+# function to create input-target pairs
 def generate_input_target_pairs(text):
     words = text.strip().split()
     pairs = []
@@ -57,6 +57,7 @@ tokenized_dataset = raw_dataset.map(
     remove_columns=["text"]
 )
 
+# Training the model
 FastLanguageModel.fit(
     model = model,
     tokenizer = tokenizer,
@@ -66,6 +67,7 @@ FastLanguageModel.fit(
     lr = 2e-4,
 )
 
+# inference
 prompt = input("enter text here: ")
 input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 input_ids = input_ids.to(model.device) 
