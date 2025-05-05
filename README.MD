@@ -28,6 +28,9 @@ Once you have Ollama installed and your model is ready, you can run the model lo
 
 ### **CODE**
 ```bash
+ollama pull <model-name>
+```
+```bash
 def get_ollama_suggestions(user_input, needed=5):
     system_prompt = f"""
     You are an autocomplete system. Your task is to predict the next word(s) based on the user's input. 
